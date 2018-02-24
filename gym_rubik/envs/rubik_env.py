@@ -22,7 +22,10 @@ class RubikEnv(gym.Env):
         self.action_space = spaces.Discrete(len(ACTION_LOOKUP))
         self.status = self.cube.score()
         self.scoreAfterLastReward = self.status
+        self.observation_space = spaces.Box(low=0, high=5, shape=(6, 3, 3), dtype=np.int32)
         self.fig = None
+
+        self.scramble = []
 
         self.debugLevel = DebugLevel.WARNING
         self.renderCube = False
@@ -85,13 +88,13 @@ class RubikEnv(gym.Env):
 
     def reset(self):
         self.cube = Cube(3, whiteplastic=False)
+        self.scramble = []
         if self.scrambleSize > 0:
             if self.debugLevel == DebugLevel.INFO:
                 print("scramble " + str(self.scrambleSize) + " moves")
-            self.cube.randomize(self.scrambleSize)
+            self.randomize(self.scrambleSize)
         self.status = self.cube.score()
         self.scoreAfterLastReward = self.status
-        self.observation_space = spaces.Box(low=0, high=5, shape=(6, 3, 3), dtype=np.int32)
         return self._get_state()
 
     def render(self, mode='human', close=False):
@@ -101,6 +104,19 @@ class RubikEnv(gym.Env):
 
     def _take_action(self, action):
         self.cube.move_by_action(ACTION_LOOKUP[action])
+
+    def action_name(self, action):
+        return ACTION_LOOKUP[action].name
+
+    def get_scramble(self):
+        return self.scramble
+
+    def randomize(self, number):
+        for t in range(number):
+            action = ACTION_LOOKUP[np.random.randint(len(ACTION_LOOKUP.keys()))]
+            self.scramble.append(action.name)
+            self.cube.move_by_action(action)
+        return None
 
     def _get_reward(self):
         reward = self.status - self.scoreAfterLastReward
