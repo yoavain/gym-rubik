@@ -76,12 +76,12 @@ class RubikEnv(gym.Env):
                   .format(str(self.status),
                           str(self.scoreAfterLastReward),
                           str(reward)))
-        ob = self._get_state()
+        observation = self._get_state()
         episode_over = self.cube.solved(self.status)
         if episode_over:
             if self.debugLevel == DebugLevel.INFO:
                 print("S-O-L-V-E-D !!!")
-        return ob, reward, episode_over, {}
+        return observation, reward, episode_over, {}
 
     def reset(self):
         self.cube = Cube(3, whiteplastic=False)
@@ -106,8 +106,8 @@ class RubikEnv(gym.Env):
         reward = self.status - self.scoreAfterLastReward
         if reward > 0:
             self.scoreAfterLastReward = self.status
-            return reward
-        return 0
+            return reward - 1
+        return -1
 
     def _get_state(self):
         return self.cube.get_state()
