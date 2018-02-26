@@ -4,7 +4,3 @@ register(
     id='RubikEnv-v0',
     entry_point='gym_rubik.envs:RubikEnv'
 )
-# register(
-#     id='DebugLevel-v0',
-#     entry_point='gym_rubik.envs:DebugLevel'
-# )
