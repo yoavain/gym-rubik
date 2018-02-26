@@ -111,12 +111,22 @@ class RubikEnv(gym.Env):
     def get_scramble(self):
         return self.scramble
 
+    def valid_scramble_action(self, action, previous_actions):
+        l = len(previous_actions)
+        if l > 2 and previous_actions[l - 1] == previous_actions[l - 2] and action.name == previous_actions[l - 1]:
+            return False
+        if l > 1 and self.cube.opposite_actions(previous_actions[l - 1], action):
+            return False
+        return True
+
     def randomize(self, number):
-        for t in range(number):
+        t = 0
+        while t < number:
             action = ACTION_LOOKUP[np.random.randint(len(ACTION_LOOKUP.keys()))]
-            self.scramble.append(action.name)
-            self.cube.move_by_action(action)
-        return None
+            if self.valid_scramble_action(action, self.scramble):
+                self.scramble.append(action.name)
+                self.cube.move_by_action(action)
+                t += 1
 
     def _get_reward(self):
         reward = self.status - self.scoreAfterLastReward

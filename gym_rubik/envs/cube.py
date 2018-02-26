@@ -53,18 +53,18 @@ from matplotlib.patches import Polygon
 
 
 class Actions(Enum):
-    U = {"name": "U", "f": "U", "d": 1},
-    U_1 = {"name": "U'", "f": "U", "d": -1},
-    D = {"name": "D", "f": "D", "d": 1},
-    D_1 = {"name": "D'", "f": "D", "d": -1},
-    F = {"name": "F", "f": "F", "d": 1},
-    F_1 = {"name": "F'", "f": "F", "d": -1},
-    B = {"name": "B", "f": "B", "d": 1},
-    B_1 = {"name": "B'", "f": "B", "d": -1},
-    R = {"name": "R", "f": "R", "d": 1},
-    R_1 = {"name": "R'", "f": "R", "d": -1},
-    L = {"name": "L", "f": "L", "d": 1},
-    L_1 = {"name": "L'", "f": "L", "d": -1},
+    U = {"name": "U", "f": "U", "d": 1, "opposite": "U_1"},
+    U_1 = {"name": "U'", "f": "U", "d": -1, "opposite": "U"},
+    D = {"name": "D", "f": "D", "d": 1, "opposite": "D_1"},
+    D_1 = {"name": "D'", "f": "D", "d": -1, "opposite": "D"},
+    F = {"name": "F", "f": "F", "d": 1, "opposite": "F_1"},
+    F_1 = {"name": "F'", "f": "F", "d": -1, "opposite": "F"},
+    B = {"name": "B", "f": "B", "d": 1, "opposite": "B_1"},
+    B_1 = {"name": "B'", "f": "B", "d": -1, "opposite": "B"},
+    R = {"name": "R", "f": "R", "d": 1, "opposite": "R_1"},
+    R_1 = {"name": "R'", "f": "R", "d": -1, "opposite": "R"},
+    L = {"name": "L", "f": "L", "d": 1, "opposite": "L_1"},
+    L_1 = {"name": "L'", "f": "L", "d": -1, "opposite": "L"},
 
 
 class Cube(object):
@@ -332,6 +332,9 @@ class Cube(object):
 
     def get_state(self):
         return self.stickers
+
+    def opposite_actions(self, previous_action_name, action):
+        return previous_action_name == action.value[0].get("opposite")
 
 
 def checkerboard(cube):

@@ -8,8 +8,8 @@ env = gym.make('RubikEnv-v0')
 
 # Configuration
 solved = 0
-num_episodes = 100000
-print_every = 100
+num_episodes = 10000
+print_every = 20
 timestep_limit = 25
 scramble_size = 5
 render_cube = False
@@ -21,8 +21,9 @@ y = []
 # env.spec.timestep_limit = timestep_limit
 # env._max_episode_steps = timestep_limit
 # env = wrappers.Monitor(env, 'c:\\tmp\\rubik-experiment-1', force=True)
+#env.unwrapped.config(debug_level=gym_rubik.envs.DebugLevel.WARNING, render_cube=render_cube, scramble_size=scramble_size)
 
-env.unwrapped.config(debug_level=gym_rubik.envs.DebugLevel.WARNING, render_cube=render_cube, scramble_size=scramble_size)
+env.config(debug_level=gym_rubik.envs.DebugLevel.WARNING, render_cube=render_cube, scramble_size=scramble_size)
 
 for i_episode in range(num_episodes):
     # print("Episode " + str(i_episode) + ". resetting.")
