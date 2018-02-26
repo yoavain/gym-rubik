@@ -105,17 +105,21 @@ class RubikEnv(gym.Env):
     def _take_action(self, action):
         self.cube.move_by_action(ACTION_LOOKUP[action])
 
-    def action_name(self, action):
+    @staticmethod
+    def action_name(action):
         return ACTION_LOOKUP[action].name
 
     def get_scramble(self):
         return self.scramble
 
     def valid_scramble_action(self, action, previous_actions):
-        l = len(previous_actions)
-        if l > 2 and previous_actions[l - 1] == previous_actions[l - 2] and action.name == previous_actions[l - 1]:
+        num_previous_actions = len(previous_actions)
+        if num_previous_actions > 2 \
+                and previous_actions[num_previous_actions - 1] == previous_actions[num_previous_actions - 2] \
+                and action.name == previous_actions[num_previous_actions - 1]:
             return False
-        if l > 1 and self.cube.opposite_actions(previous_actions[l - 1], action):
+        if num_previous_actions > 1 \
+                and self.cube.opposite_actions(previous_actions[num_previous_actions - 1], action):
             return False
         return True
 
