@@ -51,8 +51,8 @@ class RubikEnv(gym.Env):
 
         Returns
         -------
-        ob, reward, episode_over, info : tuple
-            ob (object) :
+        observation, reward, episode_over, info : tuple
+            observation (object) :
                 an environment-specific object representing your observation of
                 the environment.
             reward (float) :

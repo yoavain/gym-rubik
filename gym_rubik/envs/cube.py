@@ -76,8 +76,6 @@ class Cube(object):
     - optional `whiteplastic=True` if you like white cubes
     """
 
-    solved_score = 531441
-
     action_names = [a.name for a in Actions]
 
     facedict = {"U": 0, "D": 1, "F": 2, "B": 3, "R": 4, "L": 5}
@@ -107,7 +105,7 @@ class Cube(object):
         else:
             self.plasticcolor = "#1f1f1f"
         self.fontsize = 12. * (self.N / 5.)
-        return None
+        self.solved_score = self.score()
 
     def turn(self, f, d):
         """

@@ -1,5 +1,4 @@
 import gym
-# from gym import wrappers
 import gym_rubik.envs.rubik_env
 
 import matplotlib.pyplot as plt
@@ -13,17 +12,13 @@ print_every = 20
 timestep_limit = 25
 scramble_size = 5
 render_cube = False
+debug_level = gym_rubik.envs.DebugLevel.WARNING
 
 # Saved stats
 x = []
 y = []
 
-# env.spec.timestep_limit = timestep_limit
-# env._max_episode_steps = timestep_limit
-# env = wrappers.Monitor(env, 'c:\\tmp\\rubik-experiment-1', force=True)
-#env.unwrapped.config(debug_level=gym_rubik.envs.DebugLevel.WARNING, render_cube=render_cube, scramble_size=scramble_size)
-
-env.config(debug_level=gym_rubik.envs.DebugLevel.WARNING, render_cube=render_cube, scramble_size=scramble_size)
+env.config(debug_level=debug_level, render_cube=render_cube, scramble_size=scramble_size)
 
 for i_episode in range(num_episodes):
     # print("Episode " + str(i_episode) + ". resetting.")
@@ -39,8 +34,10 @@ for i_episode in range(num_episodes):
         if done:
             solved += 1
             print("Episode solved after {0} timesteps ; solved: {1}/{2}".format(t + 1, str(solved), str(i_episode + 1)))
-            print("actions:" + ', '.join(actions))
-            print("scramble:" + ', '.join(env.unwrapped.get_scramble()))
+            if debug_level == gym_rubik.envs.DebugLevel.INFO:
+                print("actions:" + ', '.join(actions))
+                print("scramble:" + ', '.join(env.unwrapped.get_scramble()))
+
             x.append(i_episode + 1)
             y.append(solved)
             break
@@ -50,7 +47,6 @@ for i_episode in range(num_episodes):
                                                                                 str(i_episode + 1)))
         x.append(i_episode + 1)
         y.append(solved)
-# env.close()
 
 plt.plot(x, y)
 plt.show()
