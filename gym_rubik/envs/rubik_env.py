@@ -28,15 +28,21 @@ class RubikEnv(gym.Env):
         self.scramble = []
 
         self.debugLevel = DebugLevel.WARNING
+        self.renderViews = True
+        self.renderFlat = True
         self.renderCube = False
         self.scrambleSize = 1
 
         self.config()
 
-    def config(self, debug_level=DebugLevel.WARNING, render_cube=False, scramble_size=1):
+    def config(self, debug_level=DebugLevel.WARNING, render_cube=False, scramble_size=1, render_views=True,
+               render_flat=True):
         self.debugLevel = debug_level
         self.renderCube = render_cube
         self.scrambleSize = scramble_size
+
+        self.renderViews = render_views
+        self.renderFlat = render_flat
 
         if self.renderCube:
             plt.ion()
@@ -99,7 +105,7 @@ class RubikEnv(gym.Env):
 
     def render(self, mode='human', close=False):
         if self.renderCube:
-            self.fig = self.cube.render(self.fig, flat=False)
+            self.fig = self.cube.render(self.fig, views=self.renderViews, flat=self.renderFlat)
             plt.pause(0.001)
 
     def _take_action(self, action):
